@@ -105,9 +105,9 @@ async def leaderboard(interaction: discord.Interaction):
         if user[1] == 0:
             continue
         elif user[1] == 1:
-            output += f"**{i+1}. {user[0]}**\n- {user[1]} submission\n"
+            output += f"**{i+1}. {user[0]}**\n- {user[1]} problem solved\n"
         else:
-            output += f"**{i+1}. {user[0]}**\n- {user[1]} submissions\n"
+            output += f"**{i+1}. {user[0]}**\n- {user[1]} problems solved\n"
 
     await interaction.response.send_message(output)
 
