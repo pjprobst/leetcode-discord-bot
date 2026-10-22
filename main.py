@@ -82,7 +82,7 @@ async def help(interaction: discord.Interaction):
 
 @tree.command(name="leaderboard", description="Display the leaderboard")
 async def leaderboard(interaction: discord.Interaction):
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('./data/database.db')
     cursor = conn.cursor()
 
     cursor.execute("SELECT name, problems_solved FROM users")
@@ -90,7 +90,7 @@ async def leaderboard(interaction: discord.Interaction):
 
     conn.close()
 
-    if all_users is None:
+    if not all_users:
         await interaction.response.send_message("Get to it! No one has solved anything!")
         return
 
@@ -119,7 +119,7 @@ async def connect(interaction: discord.Interaction, username: str):
     user_id = user.id
     name = user.display_name
 
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('./data/database.db')
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -152,7 +152,7 @@ async def submit(interaction: discord.Interaction):
     user = interaction.user
     user_id = user.id
 
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('./data/database.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
@@ -240,7 +240,7 @@ async def submit(interaction: discord.Interaction):
         WHERE thread_id = ?
         """
         
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('./data/database.db')
         cursor = conn.cursor()
 
         cursor.execute(users_query, (row['problems_solved']+1, user_id))
@@ -267,7 +267,7 @@ async def send_new_problem(problem):
     
     thread = await message.create_thread(name=f"Discussion: {question_info["title"]}")
     
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('./data/database.db')
     cursor = conn.cursor()
     cursor.execute(
         "INSERT INTO problems (thread_id, problem_id, users_solved) VALUES (?, ?, ?)",
@@ -292,7 +292,7 @@ async def poll():
         if response.status_code == 200:
             daily_problem = response.json()
 
-            conn = sqlite3.connect('database.db')
+            conn = sqlite3.connect('./data/database.db')
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
 
