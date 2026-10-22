@@ -90,10 +90,6 @@ async def leaderboard(interaction: discord.Interaction):
 
     conn.close()
 
-    if not all_users:
-        await interaction.response.send_message("Get to it! No one has solved anything!")
-        return
-
     sorted_users = sorted(all_users, key=lambda x: x[1], reverse=True)
     
     output = ""
@@ -108,6 +104,10 @@ async def leaderboard(interaction: discord.Interaction):
             output += f"**{i+1}. {user[0]}**\n- {user[1]} problem solved\n"
         else:
             output += f"**{i+1}. {user[0]}**\n- {user[1]} problems solved\n"
+    
+    if output == "":
+        await interaction.response.send_message("Get to it! No one has solved anything!")
+        return
 
     await interaction.response.send_message(output)
 
